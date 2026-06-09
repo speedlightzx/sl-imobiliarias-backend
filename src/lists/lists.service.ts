@@ -80,4 +80,27 @@ export class ListsService {
             )
         )
     }
+
+    async deleteList(userId:number, listId:number) {        
+        const [listExists] = await this.db
+        .select()
+        .from(schema.lists)
+        .where(
+            and(
+                eq(schema.lists.id, listId),
+                eq(schema.lists.user_id, userId)
+            )
+        )
+
+        if(!listExists) throw new NotFoundException(`Não foi encontrada nenhuma lista com id ${listId}`)
+
+        await this.db
+        .delete(schema.lists)
+        .where(
+            and(
+                eq(schema.lists.id, listId),
+                eq(schema.lists.user_id, userId)
+            )
+        )
+    }
 }

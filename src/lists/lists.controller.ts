@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { AuthGuard } from '@/auth/auth.guard';
 import type { AuthenticatedRequest } from '@/types/AuthenticatedRequest';
@@ -46,5 +46,17 @@ export class ListsController {
         const userId = req.userId
 
         return this.listsService.updateList(userId, body, listId)
+    }
+
+    @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @UseGuards(AuthGuard)
+    async deleteList(
+        @Req() req: AuthenticatedRequest,
+        @Param('id', ParseIntPipe) listId: number
+    ) {
+        const userId = req.userId
+
+        return this.listsService.deleteList(userId, listId)
     }
 }
