@@ -14,11 +14,11 @@ export class ListsController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    //@UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     async getAllLists(
         @Req() req: AuthenticatedRequest
     ) {
-        const userId = 1//req.userId
+        const userId = req.userId
         
         return this.listsService.getAllLists(userId)
     }

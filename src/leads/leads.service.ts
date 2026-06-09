@@ -75,4 +75,23 @@ export class LeadsService {
         })
         .where(eq(schema.leads.id, leadId))
     }
+
+    async deleteLead(userId:number, leadId:number) {
+        const [leadExists] = await this.db
+        .select()
+        .from(schema.leads)
+        .innerJoin(schema.lists, eq(schema.lists.user_id, userId))
+        .where(
+            and(
+                eq(schema.leads.id, leadId),
+                eq(schema.lists.user_id, userId)
+            )
+        )
+
+        if(!leadExists) throw new NotFoundException(`Não foi encontrado nenhum lead com o ID ${leadId}`)
+
+        await this.db
+        .delete(schema.leads)
+        .where(eq(schema.leads.id, leadId))
+    }
 }
