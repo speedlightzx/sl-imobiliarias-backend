@@ -18,7 +18,7 @@ export const lists = pgTable('lists', {
         onDelete: 'cascade'
     })
     .notNull(),
-    name: varchar('name', { length: 30 }).notNull(),
+    name: varchar('name', { length: 40 }).notNull(),
     color: varchar('color', { length: 10 })
 })
 

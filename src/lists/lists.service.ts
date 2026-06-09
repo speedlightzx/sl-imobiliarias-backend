@@ -1,9 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import * as schema from '@/database/schemas/schemas'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { createListDTO } from './dto/createList.dto';
 import { leadStatusEnum } from '@/database/schemas/schemas'
+import { updateListDTO } from './dto/updateList.dto';
 
 @Injectable()
 export class ListsService {
@@ -49,5 +50,34 @@ export class ListsService {
             color: dto.color,
             user_id: userId
         })
+    }
+
+    async updateList(userId:number, dto:updateListDTO, listId:number) {
+        if(!dto.name && !dto.color) throw new BadRequestException('Você precisa enviar ao menos um campo para editar.')
+        
+        const [listExists] = await this.db
+        .select()
+        .from(schema.lists)
+        .where(
+            and(
+                eq(schema.lists.id, listId),
+                eq(schema.lists.user_id, userId)
+            )
+        )
+
+        if(!listExists) throw new NotFoundException(`Não foi encontrada nenhuma lista com id ${listId}`)
+
+        await this.db
+        .update(schema.lists)
+        .set({
+            name: dto.name,
+            color: dto.color
+        })
+        .where(
+            and(
+                eq(schema.lists.id, listId),
+                eq(schema.lists.user_id, userId)
+            )
+        )
     }
 }

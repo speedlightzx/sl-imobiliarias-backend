@@ -1,8 +1,9 @@
 import { IsHexColor, IsOptional, IsString, MaxLength } from "class-validator"
 
-export class createListDTO {
+export class updateListDTO {
 
     @IsString()
+    @IsOptional()
     @MaxLength(40)
     name!:string
 
