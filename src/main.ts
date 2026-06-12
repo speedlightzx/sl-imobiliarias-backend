@@ -16,7 +16,7 @@ async function bootstrap() {
 
   //cors com qualquer origin por se tratar de teste técnico rodando localmente
   app.enableCors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL,
     credentials: true
   })
 

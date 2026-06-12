@@ -8,7 +8,8 @@ import * as cookie from 'cookie'
 //cors com qualquer origin por se tratar de teste técnico rodando localmente
 @WebSocketGateway({
   cors: {
-    origin: "*" 
+    origin: process.env.FRONTEND_URL,
+    credentials: true
   }
 })
 
@@ -17,7 +18,10 @@ export class ChatbotGateway {
 
   constructor(
     private readonly authService:AuthService
-  ) {}
+  ) {
+    console.log('iniciado')
+    console.log(process.env.FRONTEND_URL)
+  }
 
   private processingMessages = new Map<string, boolean>()
 

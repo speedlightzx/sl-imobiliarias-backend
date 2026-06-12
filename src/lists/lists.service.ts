@@ -43,13 +43,16 @@ export class ListsService {
     }
 
     async createList(userId:number, dto:createListDTO) {
-        await this.db
+        const [createdList] = await this.db
         .insert(schema.lists)
         .values({
             name: dto.name,
             color: dto.color,
             user_id: userId
         })
+        .returning()
+
+        return createdList
     }
 
     async updateList(userId:number, dto:updateListDTO, listId:number) {

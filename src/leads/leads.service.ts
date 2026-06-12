@@ -26,13 +26,16 @@ export class LeadsService {
 
         if(!listExists) throw new NotFoundException(`Não foi encontrado nenhuma lista com o ID ${dto.listId}`)
 
-        await this.db
+        const [createdLead] = await this.db
         .insert(schema.leads)
         .values({
             name: dto.name,
             status: dto.status,
             list_id: dto.listId
         })
+        .returning()
+
+        return createdLead
     }
 
     async updateLead(dto: updateLeadDTO, userId:number, leadId:number) {
