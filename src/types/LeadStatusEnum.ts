@@ -1,5 +1,9 @@
 export enum LeadStatus {
-    Frio = 'Frio',
-    Morno = 'Morno',
-    Quente = 'Quente'
+  New = 'Novo',
+  Contact = 'Contato',
+  Qualified = 'Qualificado',
+  Visiting = 'Visita',
+  Proposal = 'Proposta',
+  Closed = 'Fechado',
+  Lost = 'Perdido',
 }
